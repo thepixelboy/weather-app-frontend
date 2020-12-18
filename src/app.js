@@ -1,7 +1,8 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
-const { response } = require('express');
+const geocode = require('./utils/geocode');
+const forecast = require('./utils/forecast');
 
 const app = express();
 
@@ -50,18 +51,29 @@ app.get('/weather', (req, res) => {
     });
   }
 
-  res.send([
-    {
-      address: address,
-      location: 'New York City',
-      forecast: 'Cloudy with a chance of snow',
-    },
-    {
-      address: address,
-      location: 'San Francisco',
-      forecast: 'Partly cloudy',
-    },
-  ]);
+  geocode(address, (error, { latitude, longitude, location } = {}) => {
+    if (error) {
+      return res.send({ error });
+    }
+
+    forecast(
+      latitude,
+      longitude,
+      (error, { weather_descriptions, temperature, feelslike } = {}) => {
+        if (error) {
+          return res.send({ error });
+        }
+
+        res.send([
+          {
+            address: address,
+            location: location,
+            forecast: weather_descriptions,
+          },
+        ]);
+      }
+    );
+  });
 });
 
 app.get('/help/*', (req, res) => {
