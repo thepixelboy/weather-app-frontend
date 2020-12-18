@@ -42,12 +42,22 @@ app.get('/help', (req, res) => {
 });
 
 app.get('/weather', (req, res) => {
+  const address = req.query.address;
+
+  if (!address) {
+    return res.send({
+      error: 'You must provide an address',
+    });
+  }
+
   res.send([
     {
+      address: address,
       location: 'New York City',
       forecast: 'Cloudy with a chance of snow',
     },
     {
+      address: address,
       location: 'San Francisco',
       forecast: 'Partly cloudy',
     },
