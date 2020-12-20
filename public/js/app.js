@@ -1,17 +1,19 @@
-console.log('Cliente side javascript file loaded...');
+const weatherForm = document.querySelector('form');
+const searchElement = document.querySelector('input');
 
-fetch('http://puzzle.mead.io/puzzle').then((response) => {
-  response.json().then((data) => {
-    console.log(data);
-  });
-});
+weatherForm.addEventListener('submit', (event) => {
+  event.preventDefault();
 
-fetch('/weather/?address=boston').then((response) => {
-  response.json().then((data) => {
-    if (data.error) {
-      console.log(data.error);
-    } else {
-      console.log(data[0].location, data[0].forecast);
-    }
+  const location = searchElement.value;
+
+  fetch(`/weather/?address=${location}`).then((response) => {
+    response.json().then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        console.log(data[0].location);
+        console.log(data[0].forecast);
+      }
+    });
   });
 });
