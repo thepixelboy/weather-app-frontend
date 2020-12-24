@@ -14,13 +14,17 @@ const forecast = (latitude, longitude, callback) => {
     } else {
       const weather = body.current;
       const temperature = weather.temperature;
-      const feelslike = weather.feelslike;
+      const weather_icons = weather.weather_icons[0];
       const weather_descriptions = weather.weather_descriptions[0];
+      const humidity = weather.humidity;
+      const feelslike = weather.feelslike;
 
       callback(undefined, {
         temperature,
-        feelslike,
+        weather_icons,
         weather_descriptions,
+        humidity,
+        feelslike,
       });
     }
   });

@@ -1,7 +1,9 @@
 const weatherForm = document.querySelector('form');
 const searchElement = document.querySelector('input');
-const messageOne = document.querySelector('#message-1');
-const messageTwo = document.querySelector('#message-2');
+const messageOne = document.querySelector('#location');
+const temperature = document.querySelector('#temperature');
+const icon = document.querySelector('#icon');
+const forecast = document.querySelector('#forecast');
 
 weatherForm.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -9,7 +11,9 @@ weatherForm.addEventListener('submit', (event) => {
   const location = searchElement.value;
 
   messageOne.textContent = 'Loading...';
-  messageTwo.textContent = '';
+  temperature.textContent = '';
+  icon.src = '';
+  forecast.textContent = '';
 
   fetch(`/weather/?address=${location}`).then((response) => {
     response.json().then((data) => {
@@ -17,7 +21,9 @@ weatherForm.addEventListener('submit', (event) => {
         messageOne.textContent = data.error;
       } else {
         messageOne.textContent = data[0].location;
-        messageTwo.textContent = data[0].forecast;
+        temperature.textContent = `. ${data[0].temperature} degrees`;
+        icon.src = data[0].icon;
+        forecast.textContent = data[0].forecast;
       }
     });
   });

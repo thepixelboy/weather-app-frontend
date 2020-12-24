@@ -60,7 +60,16 @@ app.get('/weather', (req, res) => {
     forecast(
       latitude,
       longitude,
-      (error, { weather_descriptions, temperature, feelslike } = {}) => {
+      (
+        error,
+        {
+          weather_descriptions,
+          temperature,
+          feelslike,
+          humidity,
+          weather_icons,
+        } = {}
+      ) => {
         if (error) {
           return res.send({ error });
         }
@@ -69,7 +78,11 @@ app.get('/weather', (req, res) => {
           {
             address: address,
             location: location,
+            temperature: temperature,
+            icon: weather_icons,
             forecast: weather_descriptions,
+            humidity: humidity,
+            feelslike: feelslike,
           },
         ]);
       }
